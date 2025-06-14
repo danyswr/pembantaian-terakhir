@@ -55,14 +55,45 @@ export function ProductCard({ product, onOrder, onEdit, onDelete, isOwner = fals
 
   return (
     <Card 
-      className="group relative overflow-hidden bg-white border-0 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 rounded-xl"
+      className="group relative overflow-hidden glass hover:shadow-glow-hover transition-all duration-500 transform hover:-translate-y-2 rounded-2xl border-0"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Gradient overlay for premium feel */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-transparent to-purple-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      {/* Status badges */}
+      <div className="absolute top-4 left-4 z-10 flex gap-2">
+        {!isActive && (
+          <Badge variant="secondary" className="bg-gray-500/90 text-white">
+            Tidak Aktif
+          </Badge>
+        )}
+        {isOutOfStock && (
+          <Badge variant="destructive" className="bg-red-500/90 text-white">
+            Stok Habis
+          </Badge>
+        )}
+        {stock > 0 && stock <= 5 && (
+          <Badge variant="destructive" className="bg-orange-500/90 text-white">
+            Stok Terbatas
+          </Badge>
+        )}
+      </div>
+
+      {/* Favorite button */}
+      {!isOwner && (
+        <Button
+          variant="ghost"
+          size="sm"
+          className={`absolute top-4 right-4 z-10 w-8 h-8 rounded-full glass ${isLiked ? 'text-red-500' : 'text-gray-600'} hover:scale-110 transition-all duration-200`}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsLiked(!isLiked);
+          }}
+        >
+          <Heart className={`h-4 w-4 ${isLiked ? 'fill-current' : ''}`} />
+        </Button>
+      )}
       
-      <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 relative overflow-hidden">
+      <div className="aspect-square bg-gradient-to-br from-muted/50 to-muted relative overflow-hidden rounded-t-2xl">
         {directImageUrl ? (
           <img 
             src={directImageUrl} 
@@ -88,14 +119,14 @@ export function ProductCard({ product, onOrder, onEdit, onDelete, isOwner = fals
         ) : null}
         
         <div 
-          className="w-full h-full flex items-center justify-center image-placeholder" 
+          className="w-full h-full flex items-center justify-center image-placeholder bg-gradient-to-br from-muted/50 to-muted" 
           style={{ display: directImageUrl ? 'none' : 'flex' }}
         >
-          <ImageIcon className="h-16 w-16 text-gray-400" />
+          <ImageIcon className="h-16 w-16 text-muted-foreground" />
         </div>
         
         {/* Interactive overlay buttons */}
-        <div className={`absolute inset-0 bg-black/20 flex items-center justify-center gap-2 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+        <div className={`absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end justify-center pb-4 gap-2 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
           {!isOwner && (
             <>
               <Button

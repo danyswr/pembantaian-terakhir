@@ -2,13 +2,14 @@ import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ProductCard } from "@/components/product-card";
 import { OrderModal } from "@/components/order-modal";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { useAuth } from "@/lib/auth";
 import { makeAPICall } from "@/lib/api";
-import { ShoppingBag, RefreshCw } from "lucide-react";
+import { ShoppingBag, RefreshCw, Search } from "lucide-react";
 import { Link } from "wouter";
 
 export default function BuyerDashboard() {
@@ -73,48 +74,66 @@ export default function BuyerDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-primary/5">
       <div className="space-y-8 pb-20">
-        {/* Modern Header with gradient background */}
-        <div className="bg-gradient-to-r from-blue-600 via-blue-500 to-purple-600 text-white rounded-2xl p-8 shadow-xl">
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-            <div className="space-y-2">
-              <h1 className="text-4xl font-bold">Selamat Datang, {user?.fullName}</h1>
-              <p className="text-blue-100 text-lg">Temukan produk terbaik untuk kebutuhan Anda</p>
-              <div className="flex items-center gap-4 text-sm text-blue-100">
-                <span>📍 {user?.jurusan || 'Universitas'}</span>
-                <span>📧 {user?.email}</span>
+        {/* Modern Header with glass morphism */}
+        <div className="relative overflow-hidden glass rounded-3xl p-8 shadow-2xl border border-white/20">
+          <div className="absolute inset-0 gradient-bg opacity-90"></div>
+          <div className="relative z-10">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+                    Dashboard Pembeli
+                  </Badge>
+                  <h1 className="text-4xl lg:text-5xl font-bold text-white">
+                    Selamat Datang, {user?.fullName || "Pembeli"}
+                  </h1>
+                  <p className="text-white/90 text-lg">
+                    Temukan produk terbaik untuk kebutuhan Anda
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-4 text-sm text-white/80">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                    <span>{user?.jurusan || 'Universitas'}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                    <span>{user?.email}</span>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link href="/orders">
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link href="/orders">
+                  <Button 
+                    size="lg" 
+                    variant="secondary"
+                    className="glass text-white border-white/30 hover:bg-white/20 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  >
+                    <ShoppingBag className="h-5 w-5 mr-2" />
+                    Pesanan Saya
+                  </Button>
+                </Link>
                 <Button 
                   size="lg" 
-                  variant="secondary"
-                  className="bg-white/20 backdrop-blur-sm text-white border-white/30 hover:bg-white/30 transition-all duration-200"
+                  variant="outline"
+                  className="glass text-white border-white/30 hover:bg-white/20 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  onClick={() => refetch()}
                 >
-                  <ShoppingBag className="h-5 w-5 mr-2" />
-                  Pesanan Saya
+                  <RefreshCw className="h-5 w-5 mr-2" />
+                  Refresh
                 </Button>
-              </Link>
-              <Button 
-                size="lg" 
-                variant="outline"
-                className="bg-white/10 backdrop-blur-sm text-white border-white/30 hover:bg-white/20 transition-all duration-200"
-                onClick={() => refetch()}
-              >
-                <RefreshCw className="h-5 w-5 mr-2" />
-                Refresh
-              </Button>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Modern Search and Filter Section */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg border-0">
+        <div className="glass rounded-2xl p-6 shadow-lg border border-white/20">
           <div className="flex flex-col lg:flex-row gap-6">
             <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Cari Produk
               </label>
               <div className="relative">
@@ -122,21 +141,17 @@ export default function BuyerDashboard() {
                   placeholder="Ketik nama produk atau deskripsi..."
                   value={searchQuery}
                   onChange={(e) => handleSearch(e.target.value)}
-                  className="w-full pl-12 h-12 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-12 h-12 bg-background/50 border-border/30 rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all"
                 />
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </div>
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
               </div>
             </div>
             <div className="w-full lg:w-64">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-foreground mb-2">
                 Kategori
               </label>
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger className="h-12 border-gray-200 rounded-lg">
+                <SelectTrigger className="h-12 bg-background/50 border-border/30 rounded-xl">
                   <SelectValue placeholder="Pilih Kategori" />
                 </SelectTrigger>
                 <SelectContent>
@@ -154,42 +169,40 @@ export default function BuyerDashboard() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-xl p-6 shadow-lg border-0">
+          <div className="glass rounded-xl p-6 shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Produk</p>
-                <p className="text-3xl font-bold text-gray-900">{products.length}</p>
+                <p className="text-sm font-medium text-muted-foreground">Total Produk</p>
+                <p className="text-3xl font-bold text-foreground">{products.length}</p>
               </div>
-              <div className="bg-blue-100 p-3 rounded-lg">
-                <ShoppingBag className="h-8 w-8 text-blue-600" />
+              <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                <ShoppingBag className="h-6 w-6 text-blue-600" />
               </div>
             </div>
           </div>
           
-          <div className="bg-white rounded-xl p-6 shadow-lg border-0">
+          <div className="glass rounded-xl p-6 shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Kategori Tersedia</p>
-                <p className="text-3xl font-bold text-gray-900">{categories.length}</p>
+                <p className="text-sm font-medium text-muted-foreground">Kategori Tersedia</p>
+                <p className="text-3xl font-bold text-foreground">{categories.length}</p>
               </div>
-              <div className="bg-green-100 p-3 rounded-lg">
-                <svg className="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
+                <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow-lg border-0">
+          <div className="glass rounded-xl p-6 shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Hasil Pencarian</p>
-                <p className="text-3xl font-bold text-gray-900">{filteredProducts.length}</p>
+                <p className="text-sm font-medium text-muted-foreground">Hasil Pencarian</p>
+                <p className="text-3xl font-bold text-foreground">{filteredProducts.length}</p>
               </div>
-              <div className="bg-purple-100 p-3 rounded-lg">
-                <svg className="h-8 w-8 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
+              <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
+                <Search className="h-6 w-6 text-purple-600" />
               </div>
             </div>
           </div>
@@ -198,20 +211,20 @@ export default function BuyerDashboard() {
         {/* Products Grid */}
         <div className="space-y-6">
           <div className="flex justify-between items-center">
-            <h2 className="text-3xl font-bold text-gray-900">Katalog Produk</h2>
-            <div className="text-sm text-gray-600 bg-white px-4 py-2 rounded-lg shadow">
+            <h2 className="text-3xl font-bold text-foreground">Katalog Produk</h2>
+            <div className="text-sm text-muted-foreground glass px-4 py-2 rounded-xl border border-white/20">
               Menampilkan {filteredProducts.length} produk
             </div>
           </div>
 
           {filteredProducts.length === 0 ? (
             <div className="text-center py-20">
-              <div className="bg-white rounded-2xl p-12 shadow-lg max-w-md mx-auto">
-                <ShoppingBag className="h-20 w-20 text-gray-400 mx-auto mb-6" />
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">
+              <div className="glass rounded-3xl p-12 shadow-xl max-w-md mx-auto border border-white/20">
+                <ShoppingBag className="h-20 w-20 text-muted-foreground mx-auto mb-6 animate-float" />
+                <h3 className="text-xl font-semibold text-foreground mb-3">
                   {searchQuery || selectedCategory ? "Tidak ada produk yang sesuai" : "Belum ada produk tersedia"}
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-muted-foreground mb-6">
                   {searchQuery || selectedCategory 
                     ? "Coba ubah kata kunci pencarian atau kategori" 
                     : "Tunggu penjual menambahkan produk baru"}
@@ -223,7 +236,7 @@ export default function BuyerDashboard() {
                       setSearchQuery("");
                       setSelectedCategory("all");
                     }}
-                    className="px-6 py-2"
+                    className="px-6 py-2 rounded-xl"
                   >
                     Reset Filter
                   </Button>

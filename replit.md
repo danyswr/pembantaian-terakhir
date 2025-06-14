@@ -8,16 +8,16 @@ EcoMarket is a modern e-commerce platform built with React and Express, designed
 
 ### Frontend Architecture
 - **Framework**: React 18 with TypeScript
-- **Build Tool**: Vite for fast development and optimized builds
+- **Build Tool**: Next.js with App Router for SSR and deployment optimization
 - **Styling**: Tailwind CSS with shadcn/ui component library
 - **State Management**: TanStack React Query for server state management
-- **Routing**: Wouter for lightweight client-side routing
+- **Routing**: Next.js App Router for file-based routing
 - **Forms**: React Hook Form with Zod validation
 
 ### Backend Architecture
-- **Server**: Express.js with TypeScript
-- **Development**: tsx for TypeScript execution in development
-- **Build**: esbuild for production bundling
+- **API Routes**: Next.js API Routes with App Router
+- **Deployment**: Optimized for Vercel hosting
+- **Development**: Next.js development server with hot reload
 - **Data Layer**: Google Apps Script as backend API (no traditional database)
 
 ### UI Component System
@@ -99,16 +99,16 @@ EcoMarket is a modern e-commerce platform built with React and Express, designed
 ## Deployment Strategy
 
 ### Development Environment
-- Vite development server on port 5000
-- Hot module replacement for fast iteration
+- Next.js development server with hot reload
 - TypeScript checking and error overlay
-- Replit integration for cloud development
+- App Router for modern React patterns
+- Optimized for Vercel deployment
 
 ### Production Build
-- Vite builds client assets to `dist/public`
-- esbuild bundles server code to `dist/index.js`
-- Static file serving for production deployment
-- Environment variable configuration
+- Next.js builds optimized static and server-side rendered assets
+- Automatic code splitting and optimization
+- API routes for serverless functions
+- Environment variable configuration for Vercel
 
 ### Database Strategy
 - Currently uses Google Sheets via Apps Script
@@ -117,10 +117,10 @@ EcoMarket is a modern e-commerce platform built with React and Express, designed
 - Migration scripts ready for deployment
 
 ### Hosting
-- Configured for Replit deployment
-- Autoscale deployment target
-- Port 5000 mapped to external port 80
-- PostgreSQL module available for future use
+- Optimized for Vercel deployment
+- Serverless functions for API routes
+- Static site generation where applicable
+- Environment variables managed through Vercel dashboard
 
 ## Changelog
 
@@ -133,6 +133,7 @@ EcoMarket is a modern e-commerce platform built with React and Express, designed
 - June 14, 2025. Fixed infinite loop in BuyerDashboard by replacing useEffect with useMemo
 - June 14, 2025. Resolved user ID mapping issues between login data and spreadsheet data
 - June 14, 2025. Fixed seller dashboard to properly display products and orders using UUID mapping
+- June 14, 2025. Migrated from Vite to Next.js App Router structure for Vercel hosting compatibility
 
 ## User Preferences
 

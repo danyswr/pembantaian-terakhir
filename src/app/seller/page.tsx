@@ -128,7 +128,7 @@ export default function SellerDashboard() {
   // Calculate stats
   const totalRevenue = myOrders
     .filter((order: any[]) => order[6] === "completed") // status
-    .reduce((sum, order) => sum + (parseFloat(order[4]) || 0), 0); // total_price
+    .reduce((sum: number, order: any) => sum + (parseFloat(order[4]) || 0), 0); // total_price
 
   const activeProducts = myProducts.filter((product: any[]) => product[9] === "active").length;
   const pendingOrders = myOrders.filter((order: any[]) => order[6] === "pending").length;
@@ -233,7 +233,7 @@ export default function SellerDashboard() {
             </Card>
           ) : (
             <div className="space-y-4">
-              {myOrders.slice(0, 5).map((order, index) => {
+              {myOrders.slice(0, 5).map((order: any, index: number) => {
                 const product = products.find((p: any[]) => p[0] === order[2]);
                 return (
                   <Card key={order[0] || index} className="cursor-pointer hover:shadow-glow transition-all duration-300" 
@@ -288,7 +288,7 @@ export default function SellerDashboard() {
             </Card>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {myProducts.map((product, index) => (
+              {myProducts.map((product: any, index: number) => (
                 <ProductCard
                   key={product[0] || index}
                   product={product}

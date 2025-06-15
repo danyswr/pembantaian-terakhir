@@ -51,7 +51,8 @@ export async function makeAPICall<T = any>(
         action: data.action,
         email: data.email,
         password: data.password,
-        fullName: data.fullName,
+        name: data.name || data.fullName,
+        fullName: data.fullName || data.name,
         nomorHp: data.nomorHp,
         jurusan: data.jurusan,
         role: data.role
@@ -103,7 +104,7 @@ export async function makeAPICall<T = any>(
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Terjadi kesalahan saat menghubungi server'
-    };
+    } as ApiResponse<T>;
   }
 }
 

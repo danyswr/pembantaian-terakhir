@@ -77,7 +77,7 @@ export default function Auth() {
       } else {
         toast({
           title: "Login gagal",
-          description: response.message || "Email atau password salah.",
+          description: response.error || "Email atau password salah.",
           variant: "destructive",
         });
       }
@@ -135,7 +135,7 @@ export default function Auth() {
       } else {
         toast({
           title: "Registrasi gagal",
-          description: response.message || "Terjadi kesalahan saat membuat akun.",
+          description: response.error || "Terjadi kesalahan saat membuat akun.",
           variant: "destructive",
         });
       }

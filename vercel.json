@@ -5,6 +5,6 @@
   "installCommand": "npm install",
   "devCommand": "next dev",
   "env": {
-    "GOOGLE_APPS_SCRIPT_URL": "@google_apps_script_url"
+    "GOOGLE_APPS_SCRIPT_URL": "https://script.google.com/macros/s/AKfycbwSxdhUGzge3dXCwtM0rFAt0kHw5NsiXUZ8tNE0hfRgCif4kgeKP5b_zgTG3lsxTJ7TPA/exec"
   }
 }

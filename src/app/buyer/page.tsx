@@ -9,25 +9,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ProductCard } from "@/components/product-card";
 import { OrderModal } from "@/components/order-modal";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { useAuth } from "@/lib/auth";
 import { makeAPICall } from "@/lib/api";
-import { ShoppingBag, RefreshCw, Search } from "lucide-react";
+import { ShoppingBag, RefreshCw, Search, Package2, Tag } from "lucide-react";
 import Link from "next/link";
 
 export default function BuyerDashboard() {
+  const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [orderProduct, setOrderProduct] = useState<any[] | null>(null);
-
-  // Get user from localStorage
-  const getUserFromStorage = () => {
-    if (typeof window !== 'undefined') {
-      const userData = localStorage.getItem("user");
-      return userData ? JSON.parse(userData) : null;
-    }
-    return null;
-  };
-
-  const user = getUserFromStorage();
 
   const { data: productsResponse, isLoading, refetch } = useQuery({
     queryKey: ['/api/products'],
@@ -60,173 +51,255 @@ export default function BuyerDashboard() {
       filtered = filtered.filter((product: any[]) => product[7] === selectedCategory);
     }
 
-    // Only show active products
-    filtered = filtered.filter((product: any[]) => product[9] === "active");
+    // Filter out inactive products and products from current user
+    filtered = filtered.filter((product: any[]) => 
+      product[8] === 1 && product[1] !== user?.email
+    );
 
     return filtered;
-  }, [products, searchQuery, selectedCategory]);
+  }, [products, searchQuery, selectedCategory, user?.email]);
 
   const handleOrder = (product: any[]) => {
     setOrderProduct(product);
   };
 
-  const handleRefresh = () => {
-    refetch();
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
   };
 
-  if (!user) {
+  if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <h2 className="text-2xl font-bold">Silakan login terlebih dahulu</h2>
-          <Link href="/auth">
-            <Button>Login</Button>
-          </Link>
-        </div>
+      <div className="flex justify-center items-center min-h-[400px]">
+        <LoadingSpinner size="lg" />
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-col space-y-6">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
-          <div>
-            <h1 className="text-3xl font-bold gradient-text">Dashboard Pembeli</h1>
-            <p className="text-muted-foreground mt-1">
-              Selamat datang, {user.name || user.email}
-            </p>
-          </div>
-          
-          <div className="flex items-center space-x-2">
-            <Link href="/buyer/orders">
-              <Button variant="outline" className="flex items-center space-x-2">
-                <ShoppingBag className="h-4 w-4" />
-                <span>Pesanan Saya</span>
-              </Button>
-            </Link>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={handleRefresh}
-              disabled={isLoading}
-            >
-              <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-            </Button>
-          </div>
-        </div>
-
-        {/* Search and Filter */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Cari produk..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          
-          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-            <SelectTrigger className="w-full sm:w-48">
-              <SelectValue placeholder="Semua Kategori" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="">Semua Kategori</SelectItem>
-              {categories.map((category) => (
-                <SelectItem key={category} value={category}>
-                  {category}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-card rounded-lg p-4 shadow-sm border">
-            <div className="text-2xl font-bold text-primary">{products.length}</div>
-            <div className="text-sm text-muted-foreground">Total Produk</div>
-          </div>
-          <div className="bg-card rounded-lg p-4 shadow-sm border">
-            <div className="text-2xl font-bold text-primary">{filteredProducts.length}</div>
-            <div className="text-sm text-muted-foreground">Produk Tersedia</div>
-          </div>
-          <div className="bg-card rounded-lg p-4 shadow-sm border">
-            <div className="text-2xl font-bold text-primary">{categories.length}</div>
-            <div className="text-sm text-muted-foreground">Kategori</div>
-          </div>
-        </div>
-
-        {/* Products Grid */}
-        {isLoading ? (
-          <div className="flex justify-center items-center py-12">
-            <LoadingSpinner className="h-8 w-8" />
-            <span className="ml-2">Memuat produk...</span>
-          </div>
-        ) : filteredProducts.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="text-muted-foreground">
-              {searchQuery || selectedCategory 
-                ? "Tidak ada produk yang sesuai dengan pencarian"
-                : "Belum ada produk tersedia"
-              }
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-primary/5">
+      <div className="space-y-8 pb-20">
+        {/* Modern Header with glass morphism */}
+        <div className="relative overflow-hidden glass rounded-3xl p-8 shadow-2xl border border-white/20">
+          <div className="absolute inset-0 gradient-bg opacity-90"></div>
+          <div className="relative z-10">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+                    Dashboard Pembeli
+                  </Badge>
+                  <h1 className="text-4xl lg:text-5xl font-bold text-white">
+                    Selamat Datang, {user?.fullName || "Pembeli"}
+                  </h1>
+                  <p className="text-white/90 text-lg">
+                    Temukan produk terbaik untuk kebutuhan Anda
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-4 text-sm text-white/80">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                    <span>{user?.jurusan || 'Universitas'}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <ShoppingBag className="h-4 w-4" />
+                    <span>Mode Belanja</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link href="/orders">
+                  <Button 
+                    variant="outline" 
+                    className="bg-white/20 border-white/30 text-white hover:bg-white/30 backdrop-blur-sm"
+                  >
+                    <ShoppingBag className="mr-2 h-4 w-4" />
+                    Pesanan Saya
+                  </Button>
+                </Link>
+                <Button
+                  onClick={() => refetch()}
+                  disabled={isLoading}
+                  variant="outline"
+                  className="bg-white/20 border-white/30 text-white hover:bg-white/30 backdrop-blur-sm"
+                >
+                  <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+                  Refresh
+                </Button>
+              </div>
             </div>
-            {(searchQuery || selectedCategory) && (
+          </div>
+        </div>
+
+        {/* Enhanced Search and Filter */}
+        <div className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 shadow-xl border border-white/20">
+          <div className="flex flex-col lg:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <Input
+                placeholder="Cari produk atau deskripsi..."
+                value={searchQuery}
+                onChange={(e) => handleSearch(e.target.value)}
+                className="pl-12 h-12 border-2 border-primary/20 focus:border-primary/40 rounded-xl"
+              />
+            </div>
+            
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <SelectTrigger className="w-full lg:w-64 h-12 border-2 border-primary/20 focus:border-primary/40 rounded-xl">
+                <SelectValue placeholder="Pilih Kategori" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">Semua Kategori</SelectItem>
+                {categories.map((category) => (
+                  <SelectItem key={category} value={category}>
+                    {category}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Active Filters */}
+          {(searchQuery || selectedCategory) && (
+            <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-gray-200">
+              {searchQuery && (
+                <Badge variant="secondary" className="flex items-center gap-2 px-3 py-1">
+                  <Search className="h-3 w-3" />
+                  "{searchQuery}"
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="ml-1 hover:text-destructive"
+                  >
+                    ✕
+                  </button>
+                </Badge>
+              )}
+              {selectedCategory && (
+                <Badge variant="secondary" className="flex items-center gap-2 px-3 py-1">
+                  📂 {selectedCategory}
+                  <button
+                    onClick={() => setSelectedCategory("")}
+                    className="ml-1 hover:text-destructive"
+                  >
+                    ✕
+                  </button>
+                </Badge>
+              )}
               <Button
-                variant="link"
+                variant="ghost"
+                size="sm"
                 onClick={() => {
                   setSearchQuery("");
                   setSelectedCategory("");
                 }}
-                className="mt-2"
+                className="h-auto py-1 px-2 text-xs"
               >
-                Tampilkan semua produk
+                Clear All
               </Button>
-            )}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredProducts.map((product: any, index: number) => (
-              <ProductCard
-                key={product[0] || index}
-                product={product}
-                onOrder={handleOrder}
-                isOwner={false}
-              />
-            ))}
-          </div>
-        )}
+            </div>
+          )}
+        </div>
 
-        {/* Filter badges */}
-        {(searchQuery || selectedCategory) && (
-          <div className="flex flex-wrap gap-2">
-            {searchQuery && (
-              <Badge variant="secondary" className="flex items-center gap-1">
-                Pencarian: "{searchQuery}"
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="ml-1 text-xs hover:text-foreground"
-                >
-                  ✕
-                </button>
-              </Badge>
-            )}
-            {selectedCategory && (
-              <Badge variant="secondary" className="flex items-center gap-1">
-                Kategori: {selectedCategory}
-                <button
-                  onClick={() => setSelectedCategory("")}
-                  className="ml-1 text-xs hover:text-foreground"
-                >
-                  ✕
-                </button>
-              </Badge>
-            )}
+        {/* Stats Dashboard */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white shadow-xl">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-blue-100 text-sm font-medium">Total Produk</p>
+                <p className="text-3xl font-bold">{products.length}</p>
+              </div>
+              <div className="p-3 bg-white/20 rounded-xl">
+                <ShoppingBag className="h-8 w-8" />
+              </div>
+            </div>
           </div>
-        )}
+
+          <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-6 text-white shadow-xl">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-green-100 text-sm font-medium">Produk Tersedia</p>
+                <p className="text-3xl font-bold">{filteredProducts.length}</p>
+              </div>
+              <div className="p-3 bg-white/20 rounded-xl">
+                <Package2 className="h-8 w-8" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6 text-white shadow-xl">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-purple-100 text-sm font-medium">Kategori</p>
+                <p className="text-3xl font-bold">{categories.length}</p>
+              </div>
+              <div className="p-3 bg-white/20 rounded-xl">
+                <Tag className="h-8 w-8" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-6 text-white shadow-xl">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-orange-100 text-sm font-medium">Pencarian</p>
+                <p className="text-3xl font-bold">{searchQuery ? "1" : "0"}</p>
+              </div>
+              <div className="p-3 bg-white/20 rounded-xl">
+                <Search className="h-8 w-8" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Products Grid */}
+        <div className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 shadow-xl border border-white/20">
+          {isLoading ? (
+            <div className="flex flex-col items-center justify-center py-16 space-y-4">
+              <LoadingSpinner size="lg" />
+              <p className="text-muted-foreground">Memuat produk...</p>
+            </div>
+          ) : filteredProducts.length === 0 ? (
+            <div className="text-center py-16 space-y-4">
+              <div className="text-6xl mb-4">🛒</div>
+              <h3 className="text-xl font-semibold text-muted-foreground">
+                {searchQuery || selectedCategory 
+                  ? "Tidak ada produk yang sesuai dengan pencarian"
+                  : "Belum ada produk tersedia"
+                }
+              </h3>
+              {(searchQuery || selectedCategory) && (
+                <Button
+                  onClick={() => {
+                    setSearchQuery("");
+                    setSelectedCategory("");
+                  }}
+                  className="mt-4"
+                >
+                  Tampilkan Semua Produk
+                </Button>
+              )}
+            </div>
+          ) : (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold">
+                  Produk Tersedia ({filteredProducts.length})
+                </h2>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {filteredProducts.map((product: any, index: number) => (
+                  <ProductCard
+                    key={product[0] || index}
+                    product={product}
+                    onOrder={handleOrder}
+                    isOwner={false}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Order Modal */}

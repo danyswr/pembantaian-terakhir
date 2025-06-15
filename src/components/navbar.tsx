@@ -47,7 +47,9 @@ export function Navbar({ onSearch }: NavbarProps) {
                 <div className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center group-hover:shadow-glow transition-all duration-300">
                   <ShoppingBag className="h-5 w-5 text-white" />
                 </div>
-                <h1 className="text-xl font-bold gradient-text">UPJ enak</h1>
+                <h1 className="text-xl font-bold gradient-text">
+                  UPJMarketplace
+                </h1>
               </div>
             </Link>
           </div>

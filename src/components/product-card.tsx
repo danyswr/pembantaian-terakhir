@@ -55,7 +55,7 @@ export function ProductCard({ product, onOrder, onEdit, onDelete, isOwner = fals
 
   return (
     <Card 
-      className="group relative overflow-hidden glass hover:shadow-glow-hover transition-all duration-500 transform hover:-translate-y-2 rounded-2xl border-0"
+      className="group relative overflow-hidden neumorphism perspective-card ultra-smooth animate-fade-in"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -83,22 +83,22 @@ export function ProductCard({ product, onOrder, onEdit, onDelete, isOwner = fals
         <Button
           variant="ghost"
           size="sm"
-          className={`absolute top-4 right-4 z-10 w-8 h-8 rounded-full glass ${isLiked ? 'text-red-500' : 'text-gray-600'} hover:scale-110 transition-all duration-200`}
+          className={`absolute top-4 right-4 z-10 w-12 h-12 neumorphism ${isLiked ? 'text-red-500 animate-heartbeat neumorphism-pressed' : 'text-muted-foreground'} ultra-smooth`}
           onClick={(e) => {
             e.stopPropagation();
             setIsLiked(!isLiked);
           }}
         >
-          <Heart className={`h-4 w-4 ${isLiked ? 'fill-current' : ''}`} />
+          <Heart className={`h-6 w-6 ${isLiked ? 'fill-current' : ''}`} />
         </Button>
       )}
       
-      <div className="aspect-square bg-gradient-to-br from-muted/50 to-muted relative overflow-hidden rounded-t-2xl">
+      <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/60 relative overflow-hidden rounded-3xl neumorphism-inset">
         {directImageUrl ? (
           <img 
             src={directImageUrl} 
             alt={productName} 
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            className="w-full h-full object-cover ultra-smooth group-hover:scale-110 group-hover:brightness-110"
             onError={(e) => {
               console.log('Image load error for URL:', directImageUrl);
               e.currentTarget.style.display = 'none';
@@ -119,31 +119,33 @@ export function ProductCard({ product, onOrder, onEdit, onDelete, isOwner = fals
         ) : null}
         
         <div 
-          className="w-full h-full flex items-center justify-center image-placeholder bg-gradient-to-br from-muted/50 to-muted" 
+          className="w-full h-full flex items-center justify-center image-placeholder bg-gradient-to-br from-muted/30 to-muted/60 animate-breathe" 
           style={{ display: directImageUrl ? 'none' : 'flex' }}
         >
-          <ImageIcon className="h-16 w-16 text-muted-foreground" />
+          <ImageIcon className="h-20 w-20 text-muted-foreground/70" />
         </div>
         
         {/* Interactive overlay buttons */}
-        <div className={`absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end justify-center pb-4 gap-2 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+        <div className={`absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end justify-center pb-6 gap-3 transition-all duration-500 ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           {!isOwner && (
             <>
               <Button
                 size="sm"
                 variant="secondary"
-                className="bg-white/90 backdrop-blur-sm hover:bg-white text-gray-800"
+                className="card-modern hover-lift button-glow text-gray-800 animate-scale-in"
                 onClick={() => {}}
               >
-                <Eye className="h-4 w-4" />
+                <Eye className="h-4 w-4 mr-1" />
+                <span className="text-xs font-medium">Preview</span>
               </Button>
               <Button
                 size="sm"
                 variant="secondary"
-                className={`backdrop-blur-sm transition-colors ${isLiked ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-white/90 hover:bg-white text-gray-800'}`}
+                className={`card-modern button-glow transition-all duration-300 ${isLiked ? 'bg-red-500/90 hover:bg-red-600 text-white animate-bounce-subtle' : 'text-gray-800'}`}
                 onClick={() => setIsLiked(!isLiked)}
               >
-                <Heart className={`h-4 w-4 ${isLiked ? 'fill-current' : ''}`} />
+                <Heart className={`h-4 w-4 mr-1 ${isLiked ? 'fill-current' : ''}`} />
+                <span className="text-xs font-medium">{isLiked ? 'Liked' : 'Like'}</span>
               </Button>
             </>
           )}
@@ -159,14 +161,17 @@ export function ProductCard({ product, onOrder, onEdit, onDelete, isOwner = fals
         )}
         
         {/* Status badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-2">
+        <div className="absolute top-4 left-4 flex flex-col gap-2">
           {stock <= 5 && stock > 0 && (
-            <Badge className="bg-orange-500 hover:bg-orange-600 text-white shadow-lg">
-              Terbatas
+            <Badge className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white shadow-xl animate-glow-pulse">
+              ⚡ Terbatas
             </Badge>
           )}
           {isOwner && (
-            <Badge variant={isActive ? "default" : "secondary"} className="shadow-lg">
+            <Badge 
+              variant={isActive ? "default" : "secondary"} 
+              className={`shadow-xl transition-all duration-300 ${isActive ? 'bg-gradient-to-r from-green-500 to-emerald-500 animate-shimmer' : 'bg-gray-400'}`}
+            >
               {isActive ? "✓ Aktif" : "⚠ Nonaktif"}
             </Badge>
           )}
@@ -174,9 +179,9 @@ export function ProductCard({ product, onOrder, onEdit, onDelete, isOwner = fals
 
         {/* Category badge */}
         {category && (
-          <div className="absolute top-3 right-3">
-            <Badge variant="outline" className="bg-white/90 backdrop-blur-sm border-white/20 text-gray-700 shadow-lg">
-              {category}
+          <div className="absolute top-4 right-4">
+            <Badge variant="outline" className="card-modern border-white/30 text-gray-700 shadow-xl hover-lift">
+              📂 {category}
             </Badge>
           </div>
         )}
@@ -236,7 +241,7 @@ export function ProductCard({ product, onOrder, onEdit, onDelete, isOwner = fals
             <Button
               variant="outline"
               size="lg"
-              className="flex-1 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 transition-all duration-200"
+              className="flex-1 button-glow hover-lift border-blue-200 hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 hover:text-blue-600 hover:border-blue-400 transition-all duration-300"
               onClick={() => onEdit?.(product)}
             >
               <Edit className="h-4 w-4 mr-2" />
@@ -245,7 +250,7 @@ export function ProductCard({ product, onOrder, onEdit, onDelete, isOwner = fals
             <Button
               variant="outline"
               size="lg"
-              className="flex-1 text-red-600 hover:text-red-700 hover:bg-red-50 hover:border-red-300 transition-all duration-200"
+              className="flex-1 button-glow hover-lift text-red-600 border-red-200 hover:text-red-700 hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 hover:border-red-400 transition-all duration-300"
               onClick={() => onDelete?.(productId)}
             >
               <Trash2 className="h-4 w-4 mr-2" />
@@ -255,10 +260,10 @@ export function ProductCard({ product, onOrder, onEdit, onDelete, isOwner = fals
         ) : (
           <Button
             size="lg"
-            className={`w-full transition-all duration-300 font-semibold ${
+            className={`w-full button-glow font-semibold transition-all duration-500 ${
               !isOutOfStock && isActive
-                ? "bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 shadow-lg hover:shadow-xl transform hover:scale-105"
-                : "bg-gray-400 cursor-not-allowed"
+                ? "bg-gradient-to-r from-blue-600 via-blue-500 to-purple-600 hover:from-blue-700 hover:via-blue-600 hover:to-purple-700 shadow-xl hover:shadow-2xl hover-lift animate-shimmer"
+                : "bg-gray-400 cursor-not-allowed opacity-60"
             }`}
             onClick={() => onOrder?.(product)}
             disabled={isOutOfStock || !isActive}

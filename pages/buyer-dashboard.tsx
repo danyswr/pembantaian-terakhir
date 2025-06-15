@@ -9,8 +9,9 @@ import { OrderModal } from "@/components/order-modal";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { useAuth } from "@/lib/auth";
 import { makeAPICall } from "@/lib/api";
-import { ShoppingBag, RefreshCw, Search } from "lucide-react";
+import { ShoppingBag, RefreshCw, Search, Filter, Grid, List, TrendingUp, Package, Star } from "lucide-react";
 import { Link } from "wouter";
+import { motion } from "framer-motion";
 
 export default function BuyerDashboard() {
   const { user } = useAuth();

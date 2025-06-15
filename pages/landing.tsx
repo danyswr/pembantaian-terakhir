@@ -289,58 +289,70 @@ export default function Landing() {
                 </Card>
               </motion.div>
             ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-primary to-primary/90">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <h2 className="text-3xl lg:text-4xl font-bold text-white">
+      <section className="py-32 gradient-bg relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
+        <motion.div 
+          className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={containerVariants}
+        >
+          <motion.div className="space-y-8" variants={itemVariants}>
+            <div className="space-y-6">
+              <h2 className="text-4xl lg:text-6xl font-bold text-white">
                 Siap Memulai Perjalanan Anda?
               </h2>
-              <p className="text-xl text-white/90 max-w-2xl mx-auto">
+              <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
                 Bergabunglah dengan ribuan penjual dan pembeli yang telah merasakan kemudahan platform kami
               </p>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8"
+              variants={itemVariants}
+            >
               <Link href="/auth?mode=register&role=seller">
-                <Button size="lg" variant="secondary" className="px-8 py-4 text-lg font-semibold hover:shadow-lg transition-all duration-300">
-                  <Store className="mr-2 h-5 w-5" />
+                <Button size="lg" variant="secondary" className="px-10 py-6 text-lg font-semibold hover:shadow-xl transition-all duration-300 rounded-full hover-lift">
+                  <Store className="mr-3 h-6 w-6" />
                   Daftar Sebagai Penjual
                 </Button>
               </Link>
               <Link href="/auth?mode=register&role=buyer">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary px-8 py-4 text-lg font-semibold transition-all duration-300">
-                  <ShoppingCart className="mr-2 h-5 w-5" />
+                <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-primary px-10 py-6 text-lg font-semibold transition-all duration-300 rounded-full hover-lift">
+                  <ShoppingCart className="mr-3 h-6 w-6" />
                   Daftar Sebagai Pembeli
                 </Button>
               </Link>
-            </div>
+            </motion.div>
 
-            <div className="pt-8 flex justify-center items-center space-x-8 text-white/80">
-              <div className="flex items-center space-x-2">
-                <CheckCircle className="h-5 w-5" />
-                <span>Gratis Selamanya</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <CheckCircle className="h-5 w-5" />
-                <span>Tanpa Biaya Setup</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <CheckCircle className="h-5 w-5" />
-                <span>Support 24/7</span>
-              </div>
-            </div>
-          </div>
-        </div>
+            <motion.div 
+              className="pt-12 grid grid-cols-1 sm:grid-cols-3 gap-8 text-white/90"
+              variants={itemVariants}
+            >
+              {[
+                { icon: CheckCircle, text: "Gratis Selamanya" },
+                { icon: CheckCircle, text: "Tanpa Biaya Setup" },
+                { icon: CheckCircle, text: "Support 24/7" }
+              ].map((item, index) => (
+                <motion.div 
+                  key={index}
+                  className="flex items-center justify-center space-x-3"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <item.icon className="h-6 w-6" />
+                  <span className="font-medium">{item.text}</span>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </section>
     </div>
   );

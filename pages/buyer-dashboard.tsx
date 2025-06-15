@@ -57,8 +57,25 @@ export default function BuyerDashboard() {
       product[8] === 1 && product[1] !== user?.email
     );
 
+    // Sort products
+    filtered.sort((a: any[], b: any[]) => {
+      switch (sortBy) {
+        case 'price-low':
+          return a[5] - b[5];
+        case 'price-high':
+          return b[5] - a[5];
+        case 'name':
+          return a[2].localeCompare(b[2]);
+        case 'stock':
+          return b[6] - a[6];
+        case 'newest':
+        default:
+          return new Date(b[9]).getTime() - new Date(a[9]).getTime();
+      }
+    });
+
     return filtered;
-  }, [products, searchQuery, selectedCategory, user?.email]);
+  }, [products, searchQuery, selectedCategory, user?.email, sortBy]);
 
   const handleOrder = (product: any[]) => {
     setOrderProduct(product);
@@ -132,43 +149,127 @@ export default function BuyerDashboard() {
           </div>
         </div>
 
-        {/* Modern Search and Filter Section */}
-        <div className="glass rounded-2xl p-6 shadow-lg border border-white/20">
-          <div className="flex flex-col lg:flex-row gap-6">
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Cari Produk
-              </label>
-              <div className="relative">
-                <Input
-                  placeholder="Ketik nama produk atau deskripsi..."
-                  value={searchQuery}
-                  onChange={(e) => handleSearch(e.target.value)}
-                  className="w-full pl-12 h-12 bg-background/50 border-border/30 rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all"
-                />
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
+        {/* Enhanced Search and Filter Section */}
+        <motion.div 
+          className="card-modern rounded-3xl p-6 shadow-xl border-0"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <div className="space-y-6">
+            {/* Search Bar */}
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-muted-foreground" />
+              </div>
+              <Input
+                placeholder="Cari produk favorit Anda..."
+                value={searchQuery}
+                onChange={(e) => handleSearch(e.target.value)}
+                className="w-full pl-12 pr-4 h-14 bg-background/50 border-border/30 rounded-2xl focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-300 text-lg placeholder:text-muted-foreground/70"
+              />
+              {searchQuery && (
+                <motion.button
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  onClick={() => setSearchQuery("")}
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  ✕
+                </motion.button>
+              )}
+            </div>
+
+            {/* Filters Row */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Category Filter */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-muted-foreground">Kategori</label>
+                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                  <SelectTrigger className="h-12 card-modern border-border/30 rounded-xl hover-lift">
+                    <SelectValue placeholder="Semua Kategori" />
+                  </SelectTrigger>
+                  <SelectContent className="card-modern">
+                    <SelectItem value="all">🔍 Semua Kategori</SelectItem>
+                    {categories.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        📂 {category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Sort Filter */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-muted-foreground">Urutkan</label>
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="h-12 card-modern border-border/30 rounded-xl hover-lift">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="card-modern">
+                    <SelectItem value="newest">🕒 Terbaru</SelectItem>
+                    <SelectItem value="price-low">💰 Harga Terendah</SelectItem>
+                    <SelectItem value="price-high">💎 Harga Tertinggi</SelectItem>
+                    <SelectItem value="name">🔤 Nama A-Z</SelectItem>
+                    <SelectItem value="stock">📦 Stok Terbanyak</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* View Mode Toggle */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-muted-foreground">Tampilan</label>
+                <div className="flex rounded-xl card-modern p-1">
+                  <Button
+                    variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                    size="sm"
+                    onClick={() => setViewMode('grid')}
+                    className={`flex-1 rounded-lg transition-all duration-300 ${viewMode === 'grid' ? 'bg-primary text-primary-foreground shadow-lg' : 'hover:bg-muted/50'}`}
+                  >
+                    <Grid className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant={viewMode === 'list' ? 'default' : 'ghost'}
+                    size="sm"
+                    onClick={() => setViewMode('list')}
+                    className={`flex-1 rounded-lg transition-all duration-300 ${viewMode === 'list' ? 'bg-primary text-primary-foreground shadow-lg' : 'hover:bg-muted/50'}`}
+                  >
+                    <List className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Quick Actions */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-muted-foreground">Aksi</label>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => refetch()}
+                    className="flex-1 button-glow hover-lift h-12 rounded-xl"
+                    disabled={isLoading}
+                  >
+                    <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => {
+                      setSearchQuery("");
+                      setSelectedCategory("all");
+                      setSortBy("newest");
+                    }}
+                    className="flex-1 button-glow hover-lift h-12 rounded-xl"
+                  >
+                    <Filter className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             </div>
-            <div className="w-full lg:w-64">
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Kategori
-              </label>
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger className="h-12 bg-background/50 border-border/30 rounded-xl">
-                  <SelectValue placeholder="Pilih Kategori" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">🔍 Semua Kategori</SelectItem>
-                  {categories.map((category) => (
-                    <SelectItem key={category} value={category}>
-                      📂 {category}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -247,15 +348,29 @@ export default function BuyerDashboard() {
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {filteredProducts.map((product: any[]) => (
-                <ProductCard
+            <motion.div 
+              className={`${viewMode === 'grid' 
+                ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8' 
+                : 'flex flex-col gap-6'
+              }`}
+              layout
+              transition={{ duration: 0.3 }}
+            >
+              {filteredProducts.map((product: any[], index: number) => (
+                <motion.div
                   key={product[0]}
-                  product={product}
-                  onOrder={handleOrder}
-                />
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                  layout
+                >
+                  <ProductCard
+                    product={product}
+                    onOrder={handleOrder}
+                  />
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           )}
         </div>
 

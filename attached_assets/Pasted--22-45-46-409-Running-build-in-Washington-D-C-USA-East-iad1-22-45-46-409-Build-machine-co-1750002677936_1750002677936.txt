@@ -1,0 +1,43 @@
+[22:45:46.409] Running build in Washington, D.C., USA (East) – iad1
+[22:45:46.409] Build machine configuration: 2 cores, 8 GB
+[22:45:46.424] Cloning github.com/danyswr/pembantaian-terakhir (Branch: main, Commit: 7299261)
+[22:45:46.582] Previous build caches not available
+[22:45:46.729] Cloning completed: 304.000ms
+[22:45:47.091] Running "vercel build"
+[22:45:47.532] Vercel CLI 42.2.0
+[22:45:47.848] Running "install" command: `npm install`...
+[22:45:54.449] npm warn deprecated @esbuild-kit/esm-loader@2.6.5: Merged into tsx: https://tsx.is
+[22:45:54.542] npm warn deprecated @esbuild-kit/core-utils@3.3.2: Merged into tsx: https://tsx.is
+[22:46:08.732] 
+[22:46:08.733] added 730 packages, and audited 731 packages in 21s
+[22:46:08.734] 
+[22:46:08.734] 176 packages are looking for funding
+[22:46:08.734]   run `npm fund` for details
+[22:46:08.767] 
+[22:46:08.767] 8 vulnerabilities (1 low, 7 moderate)
+[22:46:08.768] 
+[22:46:08.768] To address issues that do not require attention, run:
+[22:46:08.768]   npm audit fix
+[22:46:08.768] 
+[22:46:08.768] To address all issues (including breaking changes), run:
+[22:46:08.768]   npm audit fix --force
+[22:46:08.769] 
+[22:46:08.769] Run `npm audit` for details.
+[22:46:09.085] Detected Next.js version: 15.3.3
+[22:46:09.087] Running "next build"
+[22:46:09.919]  ⚠ Invalid next.config.js options detected: 
+[22:46:09.920]  ⚠     Unrecognized key(s) in object: 'serverComponentsExternalPackages' at "experimental"
+[22:46:09.920]  ⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+[22:46:09.921]  ⚠ `experimental.serverComponentsExternalPackages` has been moved to `serverExternalPackages`. Please update your next.config.js file accordingly.
+[22:46:09.926] Attention: Next.js now collects completely anonymous telemetry regarding usage.
+[22:46:09.927] This information is used to shape Next.js' roadmap and prioritize features.
+[22:46:09.927] You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+[22:46:09.928] https://nextjs.org/telemetry
+[22:46:09.928] 
+[22:46:09.987]    ▲ Next.js 15.3.3
+[22:46:09.988] 
+[22:46:10.048]  ⨯ Conflicting app and page file was found, please remove the conflicting files to continue:
+[22:46:10.049]  ⨯   "pages/auth.tsx" - "app/auth/page.tsx"
+[22:46:10.243] Error: Command "next build" exited with 1
+[22:46:11.163] 
+[22:46:14.180] Exiting build container

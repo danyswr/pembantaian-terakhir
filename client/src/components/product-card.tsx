@@ -93,12 +93,12 @@ export function ProductCard({ product, onOrder, onEdit, onDelete, isOwner = fals
         </Button>
       )}
       
-      <div className="aspect-square bg-gradient-to-br from-muted/50 to-muted relative overflow-hidden rounded-t-2xl">
+      <div className="aspect-square bg-gradient-to-br from-muted/30 to-muted/60 relative overflow-hidden rounded-3xl neumorphism-inset">
         {directImageUrl ? (
           <img 
             src={directImageUrl} 
             alt={productName} 
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            className="w-full h-full object-cover ultra-smooth group-hover:scale-110 group-hover:brightness-110"
             onError={(e) => {
               console.log('Image load error for URL:', directImageUrl);
               e.currentTarget.style.display = 'none';
@@ -119,10 +119,10 @@ export function ProductCard({ product, onOrder, onEdit, onDelete, isOwner = fals
         ) : null}
         
         <div 
-          className="w-full h-full flex items-center justify-center image-placeholder bg-gradient-to-br from-muted/50 to-muted" 
+          className="w-full h-full flex items-center justify-center image-placeholder bg-gradient-to-br from-muted/30 to-muted/60 animate-breathe" 
           style={{ display: directImageUrl ? 'none' : 'flex' }}
         >
-          <ImageIcon className="h-16 w-16 text-muted-foreground" />
+          <ImageIcon className="h-20 w-20 text-muted-foreground/70" />
         </div>
         
         {/* Interactive overlay buttons */}

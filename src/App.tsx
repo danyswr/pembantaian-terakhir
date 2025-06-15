@@ -1,39 +1,32 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Router, Route, Switch } from 'wouter';
 import { Toaster } from '@/components/ui/toaster';
-import { ThemeProvider } from '@/components/theme-provider';
 import { AuthProvider } from '@/lib/auth';
 import { Navbar } from '@/components/navbar';
 
 // Import pages
-import HomePage from '@/app/page';
-import LoginPage from '@/app/auth/login/page';
-import RegisterPage from '@/app/auth/register/page';
-import BuyerDashboard from '@/app/buyer/page';
-import SellerDashboard from '@/app/seller/page';
-import OrdersPage from '@/app/orders/page';
+import HomePage from '../app/page';
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="light" storageKey="ecomarket-theme">
-      <AuthProvider>
-        <div className="min-h-screen bg-background font-sans antialiased">
-          <Navbar />
-          <main className="container mx-auto px-4 py-8">
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/auth/login" element={<LoginPage />} />
-              <Route path="/auth/register" element={<RegisterPage />} />
-              <Route path="/buyer" element={<BuyerDashboard />} />
-              <Route path="/seller" element={<SellerDashboard />} />
-              <Route path="/orders" element={<OrdersPage />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </main>
-          <Toaster />
-        </div>
-      </AuthProvider>
-    </ThemeProvider>
+    <AuthProvider>
+      <div className="min-h-screen bg-background font-sans antialiased">
+        <Navbar />
+        <main className="container mx-auto px-4 py-8">
+          <Router>
+            <Switch>
+              <Route path="/" component={HomePage} />
+              <Route>
+                <div className="text-center py-12">
+                  <h1 className="text-2xl font-bold text-gray-900">Page Not Found</h1>
+                  <p className="text-gray-600 mt-2">The page you're looking for doesn't exist.</p>
+                </div>
+              </Route>
+            </Switch>
+          </Router>
+        </main>
+        <Toaster />
+      </div>
+    </AuthProvider>
   );
 }
 

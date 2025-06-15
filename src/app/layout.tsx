@@ -2,13 +2,14 @@ import React from 'react'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import Providers from './providers'
+import { ClientProviders } from './client-providers'
+import { Navbar } from '@/components/navbar'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'EcoMarket - E-commerce Platform',
-  description: 'Modern e-commerce platform connecting buyers and sellers',
+  title: 'UPJ Katering - Platform E-Commerce Terdepan',
+  description: 'Platform marketplace modern yang menghubungkan penjual dan pembeli dengan teknologi terdepan dan pengalaman yang luar biasa',
 }
 
 export default function RootLayout({
@@ -17,9 +18,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="id" suppressHydrationWarning>
       <body className={inter.className}>
-        <Providers>{children}</Providers>
+        <ClientProviders>
+          <div className="min-h-screen bg-background">
+            <Navbar />
+            <main>
+              {children}
+            </main>
+          </div>
+        </ClientProviders>
       </body>
     </html>
   )

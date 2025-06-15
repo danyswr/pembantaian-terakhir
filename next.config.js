@@ -6,7 +6,10 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  serverExternalPackages: [],
+  serverExternalPackages: ['drizzle-orm', 'drizzle-kit'],
+  env: {
+    GOOGLE_APPS_SCRIPT_URL: process.env.GOOGLE_APPS_SCRIPT_URL,
+  },
 };
 
 export default nextConfig;

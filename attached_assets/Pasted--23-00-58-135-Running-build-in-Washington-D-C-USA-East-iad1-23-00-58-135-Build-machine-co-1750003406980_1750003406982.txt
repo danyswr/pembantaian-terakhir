@@ -1,0 +1,67 @@
+[23:00:58.135] Running build in Washington, D.C., USA (East) – iad1
+[23:00:58.135] Build machine configuration: 2 cores, 8 GB
+[23:00:58.150] Cloning github.com/danyswr/pembantaian-terakhir (Branch: main, Commit: b45601c)
+[23:00:58.321] Previous build caches not available
+[23:00:58.468] Cloning completed: 317.000ms
+[23:00:58.849] Running "vercel build"
+[23:00:59.346] Vercel CLI 42.2.0
+[23:00:59.698] Running "install" command: `npm install`...
+[23:01:06.415] npm warn deprecated @esbuild-kit/core-utils@3.3.2: Merged into tsx: https://tsx.is
+[23:01:06.416] npm warn deprecated @esbuild-kit/esm-loader@2.6.5: Merged into tsx: https://tsx.is
+[23:01:20.567] 
+[23:01:20.568] added 730 packages, and audited 731 packages in 21s
+[23:01:20.569] 
+[23:01:20.569] 176 packages are looking for funding
+[23:01:20.569]   run `npm fund` for details
+[23:01:20.613] 
+[23:01:20.614] 8 vulnerabilities (1 low, 7 moderate)
+[23:01:20.614] 
+[23:01:20.614] To address issues that do not require attention, run:
+[23:01:20.614]   npm audit fix
+[23:01:20.614] 
+[23:01:20.615] To address all issues (including breaking changes), run:
+[23:01:20.615]   npm audit fix --force
+[23:01:20.615] 
+[23:01:20.615] Run `npm audit` for details.
+[23:01:20.701] Detected Next.js version: 15.3.3
+[23:01:20.702] Running "next build"
+[23:01:21.343] Attention: Next.js now collects completely anonymous telemetry regarding usage.
+[23:01:21.344] This information is used to shape Next.js' roadmap and prioritize features.
+[23:01:21.344] You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+[23:01:21.344] https://nextjs.org/telemetry
+[23:01:21.344] 
+[23:01:21.405]    ▲ Next.js 15.3.3
+[23:01:21.406] 
+[23:01:21.467]    Creating an optimized production build ...
+[23:01:27.461] Failed to compile.
+[23:01:27.461] 
+[23:01:27.461] ./app/auth/page.tsx
+[23:01:27.462] Module not found: Can't resolve '@/pages/auth'
+[23:01:27.462] 
+[23:01:27.462] https://nextjs.org/docs/messages/module-not-found
+[23:01:27.462] 
+[23:01:27.463] ./app/buyer/orders/page.tsx
+[23:01:27.463] Module not found: Can't resolve '@/pages/buyer-orders'
+[23:01:27.463] 
+[23:01:27.463] https://nextjs.org/docs/messages/module-not-found
+[23:01:27.463] 
+[23:01:27.464] ./app/buyer/page.tsx
+[23:01:27.464] Module not found: Can't resolve '@/pages/buyer-dashboard'
+[23:01:27.464] 
+[23:01:27.464] https://nextjs.org/docs/messages/module-not-found
+[23:01:27.464] 
+[23:01:27.464] ./app/page.tsx
+[23:01:27.465] Module not found: Can't resolve '@/pages/landing'
+[23:01:27.465] 
+[23:01:27.465] https://nextjs.org/docs/messages/module-not-found
+[23:01:27.465] 
+[23:01:27.465] ./app/seller/page.tsx
+[23:01:27.466] Module not found: Can't resolve '@/pages/seller-dashboard'
+[23:01:27.466] 
+[23:01:27.466] https://nextjs.org/docs/messages/module-not-found
+[23:01:27.466] 
+[23:01:27.476] 
+[23:01:27.477] > Build failed because of webpack errors
+[23:01:27.504] Error: Command "next build" exited with 1
+[23:01:27.992] 
+[23:01:30.812] Exiting build container

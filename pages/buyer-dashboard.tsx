@@ -18,6 +18,8 @@ export default function BuyerDashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [orderProduct, setOrderProduct] = useState<any[] | null>(null);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [sortBy, setSortBy] = useState('newest');
 
   const { data: productsResponse, isLoading, refetch } = useQuery({
     queryKey: ['/api/products'],

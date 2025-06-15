@@ -31,9 +31,13 @@ export default function Landing() {
   return (
     <div className="min-h-screen overflow-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center bg-gradient-to-br from-primary/5 via-background to-primary/10">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-blue-500/10 animate-gradient"></div>
+      <section className="relative min-h-screen flex items-center floating-elements parallax-bg">
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/30 to-background"></div>
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-64 h-64 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-3xl animate-float"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-br from-blue-500/15 to-transparent rounded-full blur-3xl animate-bounce-subtle"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-br from-purple-500/10 to-transparent rounded-full blur-3xl animate-breathe"></div>
+        </div>
         
         <motion.div 
           className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full"
@@ -42,80 +46,110 @@ export default function Landing() {
           variants={containerVariants}
         >
           <div className="text-center space-y-8">
-            <motion.div className="space-y-6" variants={itemVariants}>
-              <Badge variant="secondary" className="px-6 py-3 text-sm font-medium bg-primary/10 text-primary border-primary/20 hover:bg-primary/20 transition-colors">
-                <Sparkles className="w-4 h-4 mr-2" />
-                Platform E-Commerce Terdepan
-              </Badge>
+            <motion.div className="space-y-8" variants={itemVariants}>
+              <motion.div
+                initial={{ scale: 0, rotate: -10 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ duration: 0.8, type: "spring", stiffness: 100 }}
+              >
+                <Badge variant="secondary" className="neumorphism px-8 py-4 text-base font-semibold text-primary animate-morph">
+                  <Sparkles className="w-5 h-5 mr-3 animate-rotate-slow" />
+                  Platform E-Commerce Terdepan
+                </Badge>
+              </motion.div>
               
-              <h1 className="text-4xl sm:text-6xl lg:text-8xl font-bold tracking-tight">
-                <motion.span 
-                  className="block text-glow"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                >
-                  Selamat Datang di
-                </motion.span>
-                <motion.span 
-                  className="block gradient-text animate-gradient text-6xl sm:text-7xl lg:text-9xl mt-2"
-                  initial={{ opacity: 0, y: 50 }}
+              <div className="space-y-4">
+                <motion.h1 
+                  className="text-5xl sm:text-7xl lg:text-9xl font-black tracking-tight"
+                  initial={{ opacity: 0, y: 100 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
+                  transition={{ duration: 1, delay: 0.2, type: "spring", stiffness: 100 }}
                 >
-                  UPJ Katering
-                </motion.span>
-              </h1>
+                  <span className="block text-foreground">Selamat Datang di</span>
+                  <span className="block text-gradient-advanced mt-2 animate-breathe">
+                    UPJ Katering
+                  </span>
+                </motion.h1>
+                
+                <motion.div
+                  className="w-32 h-2 bg-gradient-to-r from-primary via-blue-500 to-purple-500 rounded-full mx-auto animate-gradient"
+                  initial={{ width: 0 }}
+                  animate={{ width: 128 }}
+                  transition={{ duration: 1.5, delay: 0.8 }}
+                />
+              </div>
               
               <motion.p 
-                className="max-w-4xl mx-auto text-xl sm:text-2xl text-muted-foreground leading-relaxed"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
+                className="max-w-4xl mx-auto text-xl sm:text-3xl text-muted-foreground leading-relaxed font-light"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 1 }}
               >
-                Platform marketplace modern yang menghubungkan penjual dan pembeli 
-                dengan teknologi terdepan dan pengalaman yang luar biasa
+                Platform marketplace revolusioner yang menghubungkan penjual dan pembeli 
+                dengan teknologi masa depan dan pengalaman yang tak terlupakan
               </motion.p>
             </motion.div>
             
             <motion.div 
-              className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8"
+              className="flex flex-col sm:flex-row gap-8 justify-center items-center pt-12"
               variants={itemVariants}
             >
               <Link href="/auth?mode=register&role=seller">
-                <Button size="lg" className="group gradient-bg text-white hover:shadow-glow-hover transition-all duration-300 px-10 py-6 text-lg font-semibold rounded-full hover-lift">
-                  <Store className="mr-3 h-6 w-6 group-hover:animate-float" />
-                  Mulai Berjualan
-                  <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="perspective-card"
+                >
+                  <Button size="lg" className="group neumorphism text-primary hover:text-white px-12 py-8 text-xl font-bold ultra-smooth hover:bg-gradient-to-r hover:from-primary hover:to-blue-500">
+                    <Store className="mr-4 h-7 w-7 group-hover:animate-wiggle" />
+                    Mulai Berjualan
+                    <ArrowRight className="ml-4 h-6 w-6 group-hover:translate-x-2 transition-transform duration-300" />
+                  </Button>
+                </motion.div>
               </Link>
               <Link href="/auth?mode=register&role=buyer">
-                <Button size="lg" variant="outline" className="border-2 border-primary/30 hover:bg-primary/10 hover:border-primary transition-all duration-300 px-10 py-6 text-lg font-semibold rounded-full hover-lift">
-                  <ShoppingCart className="mr-3 h-6 w-6" />
-                  Mulai Berbelanja
-                  <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="perspective-card"
+                >
+                  <Button size="lg" className="group neumorphism-inset text-primary hover:text-white px-12 py-8 text-xl font-bold ultra-smooth hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-500">
+                    <ShoppingCart className="mr-4 h-7 w-7 group-hover:animate-bounce-subtle" />
+                    Mulai Berbelanja
+                    <ArrowRight className="ml-4 h-6 w-6 group-hover:translate-x-2 transition-transform duration-300" />
+                  </Button>
+                </motion.div>
               </Link>
             </motion.div>
 
             <motion.div 
-              className="pt-16 grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-5xl mx-auto"
+              className="pt-20 grid grid-cols-1 sm:grid-cols-3 gap-10 max-w-6xl mx-auto"
               variants={itemVariants}
             >
               {[
-                { number: "1000+", label: "Produk Tersedia", icon: Store },
-                { number: "500+", label: "Penjual Aktif", icon: Users },
-                { number: "5000+", label: "Transaksi Sukses", icon: CheckCircle }
+                { number: "1000+", label: "Produk Tersedia", icon: Store, color: "from-blue-500 to-cyan-500" },
+                { number: "500+", label: "Penjual Aktif", icon: Users, color: "from-green-500 to-emerald-500" },
+                { number: "5000+", label: "Transaksi Sukses", icon: CheckCircle, color: "from-purple-500 to-pink-500" }
               ].map((stat, index) => (
                 <motion.div 
                   key={index}
-                  className="text-center p-6 rounded-2xl card-modern hover-lift"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ type: "spring", stiffness: 300 }}
+                  className="text-center perspective-card"
+                  initial={{ opacity: 0, y: 60 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 1.2 + index * 0.2 }}
+                  whileHover={{ y: -10, rotateY: 5 }}
                 >
-                  <stat.icon className="w-8 h-8 mx-auto mb-4 text-primary" />
-                  <div className="text-4xl font-bold gradient-text mb-2">{stat.number}</div>
-                  <div className="text-muted-foreground font-medium">{stat.label}</div>
+                  <div className="neumorphism p-10 rounded-3xl group ultra-smooth hover:bg-gradient-to-br hover:from-white hover:to-muted/50">
+                    <motion.div 
+                      className={`w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center animate-breathe`}
+                      whileHover={{ rotate: 10, scale: 1.1 }}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
+                      <stat.icon className="w-10 h-10 text-white" />
+                    </motion.div>
+                    <div className="text-5xl font-black text-gradient-advanced mb-3 animate-morph">{stat.number}</div>
+                    <div className="text-muted-foreground font-semibold text-lg group-hover:text-foreground transition-colors">{stat.label}</div>
+                  </div>
                 </motion.div>
               ))}
             </motion.div>

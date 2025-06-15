@@ -55,7 +55,7 @@ export function ProductCard({ product, onOrder, onEdit, onDelete, isOwner = fals
 
   return (
     <Card 
-      className="group relative overflow-hidden card-modern interactive-card smooth-corners border-0 animate-fade-in"
+      className="group relative overflow-hidden neumorphism perspective-card ultra-smooth animate-fade-in"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -83,13 +83,13 @@ export function ProductCard({ product, onOrder, onEdit, onDelete, isOwner = fals
         <Button
           variant="ghost"
           size="sm"
-          className={`absolute top-4 right-4 z-10 w-10 h-10 rounded-full card-modern ${isLiked ? 'text-red-500 animate-heartbeat' : 'text-gray-600'} magnetic-hover transition-all duration-300`}
+          className={`absolute top-4 right-4 z-10 w-12 h-12 neumorphism ${isLiked ? 'text-red-500 animate-heartbeat neumorphism-pressed' : 'text-muted-foreground'} ultra-smooth`}
           onClick={(e) => {
             e.stopPropagation();
             setIsLiked(!isLiked);
           }}
         >
-          <Heart className={`h-5 w-5 ${isLiked ? 'fill-current' : ''}`} />
+          <Heart className={`h-6 w-6 ${isLiked ? 'fill-current' : ''}`} />
         </Button>
       )}
       

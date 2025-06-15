@@ -3,5 +3,8 @@
   "buildCommand": "next build",
   "outputDirectory": ".next",
   "installCommand": "npm install",
-  "devCommand": "next dev"
+  "devCommand": "next dev",
+  "env": {
+    "GOOGLE_APPS_SCRIPT_URL": "@google_apps_script_url"
+  }
 }

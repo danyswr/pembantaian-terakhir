@@ -1,4 +1,10 @@
 {
+  "buildCommand": "next build",
+  "outputDirectory": ".next",
   "framework": "nextjs",
-  "buildCommand": "next build"
+  "functions": {
+    "app/api/**/*.ts": {
+      "runtime": "nodejs18.x"
+    }
+  }
 }
